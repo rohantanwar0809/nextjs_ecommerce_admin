@@ -13,18 +13,23 @@ export function MainNav({
   const params = useParams();
   const routes = [
     {
-      href: `/${params.storeId}/settings`,
-      label: "Settings",
-      active: pathname.startsWith(`/${params.storeId}/settings`),
-    },
-    {
       href: `/${params.storeId}`,
       label: "Dashboard",
       active: pathname === `/${params.storeId}`,
     },
+    {
+      href: `/${params.storeId}/billboards`,
+      label: "Billboards",
+      active: pathname.startsWith(`/${params.storeId}/billboards`),
+    },
+    {
+      href: `/${params.storeId}/settings`,
+      label: "Settings",
+      active: pathname.startsWith(`/${params.storeId}/settings`),
+    },
   ];
   return (
-    <nav className={cn("flex items-center space-x-44 lg:space-x-6", className)}>
+    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {routes.map((route) => (
         <Link
           href={route.href}
