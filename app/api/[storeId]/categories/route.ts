@@ -10,18 +10,18 @@ export async function POST(
   try {
     const { userId } = auth();
     const body = await req.json();
-    const { label, imageUrl } = body;
+    const { name, billboardId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!label) {
-      return new NextResponse("Label is Required", { status: 400 });
+    if (!name) {
+      return new NextResponse("Billboard Name is Required", { status: 400 });
     }
 
-    if (!imageUrl) {
-      return new NextResponse("Image URL is Required", { status: 400 });
+    if (!billboardId) {
+      return new NextResponse("Billboard ID is Required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -39,22 +39,22 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const billBoard = await prismadb.billBoard.create({
+    const category = await prismadb.category.create({
       data: {
-        label,
-        imageUrl,
+        name,
+        billboardId,
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(billBoard);
+    return NextResponse.json(category);
   } catch (error) {
-    console.log("[BILLBOARDS/POST] error", error);
+    console.log("[CATEGORY/POST] error", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
-//GET route for billboard retrieval
+// GET route for categories retrieval
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } }
@@ -64,25 +64,13 @@ export async function GET(
       return new NextResponse("Store ID is Required", { status: 400 });
     }
 
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-      },
+    const categories = await prismadb.category.findMany({
+      where: { storeId: params.storeId },
     });
 
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 403 });
-    }
-
-    const billBoards = await prismadb.billBoard.findMany({
-      where: {
-        storeId: params.storeId,
-      },
-    });
-
-    return NextResponse.json(billBoards);
+    return NextResponse.json(categories);
   } catch (error) {
-    console.log("[BILLBOARDS/GET] error", error);
+    console.log("[CATEGORY/GET] error", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

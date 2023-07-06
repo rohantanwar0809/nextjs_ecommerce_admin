@@ -10,18 +10,18 @@ export async function POST(
   try {
     const { userId } = auth();
     const body = await req.json();
-    const { label, imageUrl } = body;
+    const { name, value } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!label) {
-      return new NextResponse("Label is Required", { status: 400 });
+    if (!name) {
+      return new NextResponse("Name is Required", { status: 400 });
     }
 
-    if (!imageUrl) {
-      return new NextResponse("Image URL is Required", { status: 400 });
+    if (!value) {
+      return new NextResponse("Value is Required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -39,22 +39,22 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const billBoard = await prismadb.billBoard.create({
+    const size = await prismadb.size.create({
       data: {
-        label,
-        imageUrl,
+        name,
+        value,
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(billBoard);
+    return NextResponse.json(size);
   } catch (error) {
-    console.log("[BILLBOARDS/POST] error", error);
+    console.log("[SIZES/POST] error", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
-//GET route for billboard retrieval
+//GET route for size retrieval
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } }
@@ -74,15 +74,15 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const billBoards = await prismadb.billBoard.findMany({
+    const sizes = await prismadb.size.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(billBoards);
+    return NextResponse.json(sizes);
   } catch (error) {
-    console.log("[BILLBOARDS/GET] error", error);
+    console.log("[SIZES/GET] error", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

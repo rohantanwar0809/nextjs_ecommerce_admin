@@ -1,4 +1,6 @@
 import prismadb from "@/lib/prismadb";
+import { format } from "date-fns";
+
 import { BillboardClient } from "./components/client";
 
 const BillboardsPage = async ({ params }: { params: { storeId: string } }) => {
@@ -10,10 +12,17 @@ const BillboardsPage = async ({ params }: { params: { storeId: string } }) => {
       createdAt: "desc",
     },
   });
+
+  const formattedBillBoards = billBoards.map((billBoard) => ({
+    id: billBoard.id,
+    label: billBoard.label,
+    createdAt: format(billBoard.createdAt, "MMMM do, yyyy"),
+  }));
+
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={billBoards} />
+        <BillboardClient data={formattedBillBoards} />
       </div>
     </div>
   );
