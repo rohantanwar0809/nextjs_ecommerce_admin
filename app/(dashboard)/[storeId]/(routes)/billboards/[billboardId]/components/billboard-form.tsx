@@ -23,7 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
 
 interface BillboardFormProps {
@@ -52,7 +51,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const { storeId } = params;
 
@@ -68,7 +66,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     try {
       setIsLoading(true);
       if (initialData) {
-        await axios.put(
+        await axios.patch(
           `/api/${storeId}/billboards/${params.billboardId}`,
           values
         );
@@ -76,6 +74,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         await axios.post(`/api/${storeId}/billboards`, values);
       }
       router.refresh();
+      router.push(`/${storeId}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
