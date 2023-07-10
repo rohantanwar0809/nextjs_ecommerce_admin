@@ -42,7 +42,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 
   const title = initialData ? "Edit Size" : "Create Size";
   const description = initialData ? "Edit a Size" : "Add a new Size";
-  const toastMessage = initialData ? "Size upadted." : "Size created.";
+  const toastMessage = initialData ? "Size updated." : "Size created.";
   const action = initialData ? "Save changes" : "Create";
 
   const params = useParams();

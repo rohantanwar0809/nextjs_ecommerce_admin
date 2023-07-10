@@ -13,8 +13,11 @@ export async function GET(
       return new NextResponse("Category ID is Required", { status: 400 });
     }
 
-    const category = await prismadb.category.findUnique({
+    const category = await prismadb.category.findFirst({
       where: { id: params.categoryId },
+      include: {
+        billboard: true,
+      },
     });
 
     return NextResponse.json(category);

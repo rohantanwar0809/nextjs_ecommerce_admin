@@ -52,7 +52,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const title = initialData ? "Edit Category" : "Create Category";
   const description = initialData ? "Edit a Category" : "Add a new Category";
-  const toastMessage = initialData ? "Category upadted." : "Category created.";
+  const toastMessage = initialData ? "Category updated." : "Category created.";
   const action = initialData ? "Save changes" : "Create";
 
   const params = useParams();
